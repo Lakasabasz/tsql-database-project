@@ -17,14 +17,20 @@ create table Klienci(
 	Imie nvarchar(32) not null,
 	Nazwisko nvarchar(32) not null,
 	Firma nvarchar(128) not null,
-	Adres nvarchar(256) not null,
+	Kraj nvarchar(64) not null,
+	Miasto nvarchar(128) not null,
+	[Kod pocztowy] char(5) not null,
+	Ulica nvarchar(128) not null,
+	[Numer domu] int not null,
+	[Numer mieszkania] int null,
 	[Nr telefonu] varchar(11) not null,
 	Email nvarchar(256) not null,
 	Nip char(11) not null,
 	constraint CH_K_imie check (Imie not like '%[0-9]%'),
 	constraint CH_K_nazwisko check (Nazwisko not like '%[0-9]%'),
 	constraint CH_K_email check (Email like '%_@__%.__%'),
-	constraint CK_K_nip check (Nip like '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'))
+	constraint CK_K_nip check (Nip like '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
+	constraint CH_K_kodpocztowy check ([Kod pocztowy] like '[0-9][0-9][0-9][0-9][0-9]'))
 create table Produkty(
 	Nazwa nvarchar(256) primary key,
 	[Cena ewidencyjna] money not null,
@@ -46,7 +52,7 @@ create table Faktury(
 	constraint FK_Faktury_Klienci foreign key([ID klienta]) references Klienci([ID klienta]),
 	constraint FK_Faktury_Pracownicy foreign key([Nr pracownika]) references Pracownicy([Nr pracownika]),
 	constraint CH_F_fdost check ([Forma dostarczenia] = 'Kurier' or [Forma dostarczenia] = 'Email' or [Forma dostarczenia] = 'Oddział' or [Forma dostarczenia] = 'Inny'))
-create table PozycjeZamówienia(
+create table PozycjeFaktury(
 	[ID pozycji] int identity(1, 1) primary key,
 	[Data zamówienia] datetime default current_timestamp,
 	[Data dostarczenia] datetime null,
@@ -71,11 +77,11 @@ create table Płatności(
 	constraint FK_Płatności_Faktury foreign key([Nr faktury]) references Faktury([Nr faktury]),
 	constraint CH_Pł_ddwpłaty check([Data dokonania wpłaty] < [Termin płatności]))
 go
-drop trigger if exists TR_PZ_after_i;
-drop trigger if exists TR_PZ_after_u;
+drop trigger if exists TR_PF_after_i;
+drop trigger if exists TR_PF_after_u;
 go
-create trigger TR_PZ_after_i
-on PozycjeZamówienia
+create trigger TR_PF_after_i
+on PozycjeFaktury
 after insert
 as
 begin
@@ -97,8 +103,8 @@ begin
 	end
 end
 go
-create trigger TR_PZ_after_u
-on PozycjeZamówienia
+create trigger TR_PF_after_u
+on PozycjeFaktury
 after insert
 as
 begin
