@@ -1,6 +1,8 @@
 use master;
 drop database if exists EwidencjaFaktur;
+go
 create database EwidencjaFaktur;
+go
 use EwidencjaFaktur;
 create table Pracownicy(
 	[Nr pracownika] int identity(1,1) primary key,
