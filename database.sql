@@ -1,15 +1,5 @@
 use [EwidencjaFaktur];
 go
-insert into Pracownicy (Imie, Nazwisko, DataZatrudnienia, Login, Password)
-VALUES('Jan', 'Spataro', '02-01-2020', 'jspataro', PWDENCRYPT('silnehasłojakstąddokatowic')),
-	('Łukasz', 'Mastalerz', '02.01.2020', 'lmastalerz', PWDENCRYPT('silnehasłojakstąddokatowic'));
-
-insert into Produkty(Nazwa, [Cena ewidencyjna], [Cena minimalna], [Stawka podatku], [Stan magazynu], [Stan minimalny])
-VALUES('Produkt 1', 10, 5, 0.23, 40, NULL),
-	('Produkt 2', 50, 10, 0.23, 20, 2),
-	('Produkt 3', 1, 0.1, 0.23, 100, 10);
-
-insert into Klienci(Imie, Nazwisko, Firma, Kraj, Miasto, [Kod pocztowy], Ulica, [Numer domu], [Numer mieszkania], [Nr telefonu], Email, Nip)
 use master;
 DECLARE @DatabaseName nvarchar(50)
 SET @DatabaseName = N'EwidencjaFaktur'
