@@ -1,5 +1,3 @@
-use [EwidencjaFaktur];
-go
 use master;
 DECLARE @DatabaseName nvarchar(50)
 SET @DatabaseName = N'EwidencjaFaktur'
