@@ -255,8 +255,10 @@ VALUES('Bartosz', 'Owczarz', 'BO-dalanie', 'Polska', 'Bielsko-Biała', '43300', 
 	('Nikodem', 'Stasiewicz', 'KodenZajumen', 'Niemcy', 'Obersdorf', '06991', 'Gremlinstrasse', 1, NULL, '47987456321', 'zlomiren@serwer.de', '98745632212'),
 	('Tomasz', 'Wawoczny', 'Grucha Sp. Z O.O.', 'Polska', 'Kozy', '43344', 'Bielska', 5, NULL, '555666444', 'tw@grucha.pl', '12345678912');
 
-insert into Faktury([Data wystawienia], [Forma dostarczenia], [ID klienta], [Nr pracownika])
+insert into Faktury([Data wystawienia], [Forma dostarczenia], [Nr pracownika], [ID klienta])
 VALUES('04.20.2020', 'Email', 1, 1), ('04.30.2020', 'Email', 1, 2), ('08.10.2020', 'Email', 2, 2), ('01.01.2020', 'Kurier', 2, 3);
+
+alter table PozycjeFaktury disable trigger TR_PF_after_i;
 
 insert into PozycjeFaktury([Data zamówienia], [Data dostarczenia], [Cena jednostkowa], [Ilość], [Rabat], [Stawka podatku], [ID klienta], [Nr faktury], [Nazwa produktu])
 VALUES('04.20.2020', '04.21.2020', 10, 2, 0.1, 0.23, 1, 1, 'Produkt 1'),
@@ -265,9 +267,10 @@ VALUES('04.20.2020', '04.21.2020', 10, 2, 0.1, 0.23, 1, 1, 'Produkt 1'),
 	('01.01.2020', '01.02.2021', 50, 2, 0.1, 0.23, 3, 4, 'Produkt 2'),
 	('01.01.2020', '01.02.2021', 1, 2, 0.1, 0.23, 3, 4, 'Produkt 3');
 
+alter table PozycjeFaktury enable trigger TR_PF_after_i;
+
 insert into Płatności([Termin płatności], [Data dokonania wpłaty], [Nr faktury])
 VALUES('04.27.2020', '04.20.2020', 1),
 	('04.30.2020', NULL, 2),
 	('08.10.2020', NULL, 3),
 	('01.07.2020', '01.04.2020', 4)
-	
