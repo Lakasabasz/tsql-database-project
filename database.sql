@@ -241,8 +241,16 @@ begin
 	where Faktury.[Data wystawienia] between @start and @end
 end
 
-
 go
+
+insert into Pracownicy(Imie, Nazwisko, DataZatrudnienia, Login, Password)
+VALUES ('Jan', 'Spataro', '01-01-2020', 'jspataro', PWDENCRYPT('niesamowiciesilnehasło')),
+	('Łukasz', 'Mastalerz', '01-02-2020', 'lmastalerz', PWDENCRYPT('niesamowiciesilnehasło2'));
+
+insert into Produkty(Nazwa,	[Cena ewidencyjna], [Cena minimalna], [Stawka podatku], [Stan magazynu], [Stan minimalny])
+VALUES('Produkt 1', 20, 10, 0.23, 40, 5), ('Produkt 2', 40, 5, 0.23, 20, NULL), ('Produkt 3', 5, 0.25, 0.23, 100, 20);
+
+insert into Klienci(Imie, Nazwisko, Firma, Kraj, Miasto, [Kod pocztowy], Ulica, [Numer domu], [Numer mieszkania], [Nr telefonu], Email, Nip)
 VALUES('Bartosz', 'Owczarz', 'BO-dalanie', 'Polska', 'Bielsko-Biała', '43300', 'Jaskółcza', 24, 5, '123456789', 'admin@hosting.xd', '12345678912'),
 	('Nikodem', 'Stasiewicz', 'KodenZajumen', 'Niemcy', 'Obersdorf', '06991', 'Gremlinstrasse', 1, NULL, '47987456321', 'zlomiren@serwer.de', '98745632212'),
 	('Tomasz', 'Wawoczny', 'Grucha Sp. Z O.O.', 'Polska', 'Kozy', '43344', 'Bielska', 5, NULL, '555666444', 'tw@grucha.pl', '12345678912');
@@ -262,3 +270,4 @@ VALUES('04.27.2020', '04.20.2020', 1),
 	('04.30.2020', NULL, 2),
 	('08.10.2020', NULL, 3),
 	('01.07.2020', '01.04.2020', 4)
+	
