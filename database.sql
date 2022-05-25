@@ -274,3 +274,78 @@ VALUES('04.27.2020', '04.20.2020', 1),
 	('04.30.2020', NULL, 2),
 	('08.10.2020', NULL, 3),
 	('01.07.2020', '01.04.2020', 4)
+go
+use EwidencjaFaktur;
+go
+drop user if exists przedstawiciel;
+drop user if exists właściciel;
+drop user if exists obsługa;
+drop user if exists magazyn;
+drop user if exists księgowość;
+go
+use master;
+go
+drop user if exists przedstawiciel;
+drop user if exists właściciel;
+drop user if exists obsługa;
+drop user if exists magazyn;
+drop user if exists księgowość;
+if exists (select * from sys.server_principals where name='przedstawiciel') drop login przedstawiciel;
+if exists (select * from sys.server_principals where name='właściciel') drop login właściciel;
+if exists (select * from sys.server_principals where name='obsługa') drop login obsługa;
+if exists (select * from sys.server_principals where name='magazyn') drop login magazyn;
+if exists (select * from sys.server_principals where name='księgowość') drop login księgowość;
+go
+create login przedstawiciel with password = 'hasło', default_database = EwidencjaFaktur;
+create login właściciel with password = 'hasło', default_database = EwidencjaFaktur;
+create login obsługa with password = 'hasło', default_database = EwidencjaFaktur;
+create login magazyn with password = 'hasło', default_database = EwidencjaFaktur;
+create login księgowość with password = 'hasło', default_database = EwidencjaFaktur;
+create user przedstawiciel from login przedstawiciel;
+create user właściciel from login właściciel;
+create user obsługa from login obsługa;
+create user magazyn from login magazyn;
+create user księgowość from login księgowość;
+go
+grant connect sql to przedstawiciel;
+grant connect sql to właściciel;
+grant connect sql to obsługa;
+grant connect sql to magazyn;
+grant connect sql to księgowość;
+go
+use EwidencjaFaktur;
+go
+create user przedstawiciel for login przedstawiciel;
+create user właściciel from login właściciel;
+create user obsługa from login obsługa;
+create user magazyn from login magazyn;
+create user księgowość from login księgowość;
+go
+grant select on dbo.f_faktury_klienta to przedstawiciel;
+grant select on Produkty to przedstawiciel;
+grant select on Klienci to przedstawiciel;
+grant select on Pracownicy([Nr pracownika], [Login], [Password]) to przedstawiciel;
+go
+grant select, update, insert, delete to właściciel;
+go
+grant select, update, insert on Klienci to obsługa;
+grant select, insert on Faktury to obsługa;
+grant update on Faktury([Forma dostarczenia]) to obsługa;
+grant select, update, insert, delete on Płatności to obsługa;
+grant select, insert on PozycjeFaktury to obsługa;
+grant select on Produkty to obsługa;
+grant select on Pracownicy([Nr pracownika], [Login], [Password]) to obsługa;
+go
+grant select, update, insert on Produkty to magazyn;
+grant select on dbo.v_missing to magazyn;
+grant select on Pracownicy([Nr pracownika], [Login], [Password]) to przedstawiciel;
+go
+grant select, update, insert, delete on Faktury to księgowość;
+grant select, update, insert, delete on Płatności to księgowość;
+grant select, update, insert, delete on PozycjeFaktury to księgowość;
+grant exec on p_podatek to księgowość;
+grant select on Produkty to księgowość;
+grant update on Produkty([Stawka podatku]) to księgowość;
+go
+backup database master to disk='C:\DatabaseBackup\master.bak';
+backup database EwidencjaFaktur to disk='C:\DatabaseBackup\data.bak';
